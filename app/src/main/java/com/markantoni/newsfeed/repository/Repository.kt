@@ -1,6 +1,6 @@
 package com.markantoni.newsfeed.repository
 
-import com.markantoni.newsfeed.model.Article
+import com.markantoni.newsfeed.repository.model.Article
 
 interface Repository {
     companion object {

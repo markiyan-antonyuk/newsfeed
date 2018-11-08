@@ -2,4 +2,7 @@
     <string name="app_name">Newsfeed app</string>
     <string name="base_url" translatable="false">http://content.guardianapis.com</string>
     <string name="api_key" translatable="false">test</string>
+
+    <string name="error_general">Something went wrong, please try again.</string>
+    <string name="label_retry">Retry</string>
 </resources>
