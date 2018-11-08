@@ -26,7 +26,7 @@ fun View.showErrorSnackbar(retryAction: () -> Unit) {
         .show()
 }
 
-fun ImageView.loadImage(url: String) {
+fun ImageView.loadImage(url: String?) {
     Glide
         .with(context)
         .load(url)

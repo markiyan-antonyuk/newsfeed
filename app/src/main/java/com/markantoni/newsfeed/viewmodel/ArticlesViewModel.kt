@@ -1,47 +1,36 @@
 package com.markantoni.newsfeed.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.markantoni.newsfeed.SingleLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.markantoni.newsfeed.repository.datasource.ArticlesDataSourceFactory
 import com.markantoni.newsfeed.repository.model.Article
-import com.markantoni.newsfeed.repository.Repository
 import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 class ArticlesViewModel : ViewModel(), CoroutineScope, KoinComponent {
     private val job = Job()
-    override val coroutineContext = Dispatchers.Main + job + CoroutineExceptionHandler { _, throwable ->
-        throwable.printStackTrace()
-        error.value = throwable
-    }
-    private val repository by inject<Repository>()
-    private var currentPage = 1
-    private var _articles = mutableListOf<Article>()
+    override val coroutineContext = Dispatchers.Main + job
 
-    val error = SingleLiveData<Throwable>()
-    val articles = MutableLiveData<List<Article>>()
-    val isLoading = SingleLiveData<Boolean>()
+    private val dataSourceFactory by inject<ArticlesDataSourceFactory>()
+    val articles: LiveData<PagedList<Article>>
+    val articlesError = Transformations.switchMap(dataSourceFactory.dataSource) { it.error }
+    val articlesLoading = Transformations.switchMap(dataSourceFactory.dataSource) { it.loading }
 
     init {
-        loadFirstPage()
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(true)
+            .setInitialLoadSizeHint(25)
+            .setPageSize(10)
+            .build()
+
+        articles = LivePagedListBuilder<Int, Article>(dataSourceFactory, config).build()
     }
 
-    fun loadFirstPage() = launch {
-        isLoading.value = true
-        _articles.clear()
-        _articles.addAll(repository.loadArticles(1))
-        articles.value = _articles
-        isLoading.value = false
-    }
-
-    fun loadNextPage() {
-
-    }
-
-    fun reloadAllPages() {
-
-    }
+    fun reloadArticles() = articles.value?.dataSource?.invalidate()
 
     override fun onCleared() = job.cancel()
 }

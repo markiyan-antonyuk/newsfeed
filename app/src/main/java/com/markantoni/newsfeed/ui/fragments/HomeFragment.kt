@@ -23,11 +23,14 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        homeSwipeToRefresh.setOnRefreshListener { viewModel.loadFirstPage() }
+        homeSwipeToRefresh.setOnRefreshListener { viewModel.reloadArticles() }
         homeRecyclerView.adapter = articlesAdapter
 
         viewModel.articles.observe(this, Observer { articlesAdapter.submitList(it) })
-        viewModel.isLoading.observe(this, Observer { homeSwipeToRefresh.isRefreshing = it })
-        viewModel.error.observe(this, Observer { view?.showErrorSnackbar { viewModel.reloadAllPages() } })
+        viewModel.articlesLoading.observe(this, Observer { homeSwipeToRefresh.isRefreshing = it })
+        viewModel.articlesError.observe(this, Observer {
+            homeSwipeToRefresh.isRefreshing = false
+            view?.showErrorSnackbar { viewModel.reloadArticles() }
+        })
     }
 }
