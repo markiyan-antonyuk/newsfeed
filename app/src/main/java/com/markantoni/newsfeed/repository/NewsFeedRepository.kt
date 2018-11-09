@@ -26,9 +26,12 @@ class NewsFeedRepository : Repository, KoinComponent {
     override suspend fun loadArticle(id: String): Article =
         try {
             val article = networkRepository.loadArticle(id)
-            //check if it's isSaved too
-            val dbArticle = dbRepository.loadArticle(id)
-            article.isSaved = article.id == dbArticle.id
+            try {
+                //check if it's saved too
+                val dbArticle = dbRepository.loadArticle(id)
+                article.isSaved = article.id == dbArticle.id
+            } catch (e: Exception) {
+            }
             article
         } catch (e: Exception) {
             if (e.isNetworkRelated()) {

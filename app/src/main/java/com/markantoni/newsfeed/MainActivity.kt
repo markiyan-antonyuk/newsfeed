@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             transition.image.let { addSharedElement(it, it.transitionName) }
-            setCustomAnimations(android.R.anim.fade_in, 0, android.R.anim.fade_in, 0)
+            setCustomAnimations(android.R.anim.fade_in, 0, 0, android.R.anim.fade_out)
             replace(R.id.fragmentContainer, fragment)
             addToBackStack(null)
         }

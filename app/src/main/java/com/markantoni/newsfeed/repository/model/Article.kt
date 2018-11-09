@@ -12,3 +12,5 @@ data class Article(
     var isSaved: Boolean = false,
     var isPinned: Boolean = false
 ) : Parcelable
+
+fun Article.isEmpty() = id.isEmpty() && title.isEmpty()

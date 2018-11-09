@@ -15,10 +15,10 @@ data class ArticleModel(
 
 @Dao
 interface ArticlesDao {
-    @Query("SELECT * from article")
+    @Query("SELECT * FROM article")
     fun selectAllArticles(): List<ArticleModel>
 
-    @Query("SELECT * from article WHERE id = (:id)")
+    @Query("SELECT * FROM article WHERE id = (:id) ")
     fun findArticle(id: String): ArticleModel?
 
     @Insert

@@ -10,6 +10,7 @@ import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.extensions.inflate
 import com.markantoni.newsfeed.extensions.loadImage
 import com.markantoni.newsfeed.repository.model.Article
+import com.markantoni.newsfeed.repository.model.isEmpty
 import kotlinx.android.synthetic.main.row_home_article.view.*
 
 class ArticlesAdapter(private val onArticleClicked: (Article, ImageView) -> Unit) :
@@ -26,7 +27,7 @@ class ArticlesAdapter(private val onArticleClicked: (Article, ImageView) -> Unit
                 articleImage.transitionName = article?.title
                 articleTitle.text = article?.title
                 articleCategory.text = article?.category
-                setOnClickListener { article?.let { onArticleClicked(it, articleImage) } }
+                setOnClickListener { article?.let { if (!it.isEmpty()) onArticleClicked(it, articleImage) } }
             }
         }
     }

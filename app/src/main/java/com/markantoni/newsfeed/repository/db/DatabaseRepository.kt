@@ -22,7 +22,7 @@ class DatabaseRepository : Repository, KoinComponent, CoroutineScope {
     }.await()
 
     override suspend fun loadArticle(id: String): Article = async {
-        db.articlesDao().findArticle(id)?.toArticle() ?: Article("", "", "", "", "", 0)
+        db.articlesDao().findArticle(id)?.toArticle() ?: error("Item can't be fetched from DB")
     }.await()
 
     override suspend fun saveArticle(article: Article) {
