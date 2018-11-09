@@ -18,4 +18,6 @@ class NetworkRepository : Repository, KoinComponent {
         val response = guardianService.fetchArticle(apiKey, id).await().response
         return response.results.first().toArticle()
     }
+
+    override suspend fun saveArticle(article: Article) = error("Can't save to network")
 }

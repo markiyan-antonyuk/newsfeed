@@ -11,7 +11,11 @@ class ArticleViewModel : CoroutineViewModel(), KoinComponent {
     private val repository by inject<Repository>()
     val article = MutableLiveData<Article>()
 
-    fun loadArticle(id: String) = launch {
-        article.value = repository.loadArticle(id)
+    fun loadArticle(id: String) = launch { article.value = repository.loadArticle(id) }
+
+    fun saveArticle(article: Article) = launch {
+        article.isSaved = true
+        repository.saveArticle(article)
+        this@ArticleViewModel.article.value = article
     }
 }
