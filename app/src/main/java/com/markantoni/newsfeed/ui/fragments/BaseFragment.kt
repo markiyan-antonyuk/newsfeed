@@ -23,4 +23,9 @@ abstract class BaseFragment : Fragment() {
     protected fun dismissSnackbar() {
         snackbar?.dismiss()
     }
+
+    override fun onStop() {
+        dismissSnackbar()
+        super.onStop()
+    }
 }

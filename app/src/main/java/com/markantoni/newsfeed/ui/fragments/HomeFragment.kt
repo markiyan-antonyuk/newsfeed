@@ -9,13 +9,12 @@ import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.extensions.inflate
 import com.markantoni.newsfeed.ui.adapters.ArticlesAdapter
 import com.markantoni.newsfeed.viewmodel.NavigationViewModel
-import com.markantoni.newsfeed.viewmodel.NewsFeedViewModel
+import com.markantoni.newsfeed.viewmodel.FeedViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment() {
-    private val viewModel by viewModel<NewsFeedViewModel>()
+    private val viewModel by sharedViewModel<FeedViewModel>()
     private val navigationViewModel by sharedViewModel<NavigationViewModel>()
     private val articlesAdapter = ArticlesAdapter { article, imageView ->
         navigationViewModel.requestShowArticleDetails(article, imageView)
@@ -40,10 +39,5 @@ class HomeFragment : BaseFragment() {
             viewModel.cancelScheduledCheckNewArticles()
             showSnackbar(R.string.message_articles_available, R.string.label_load) { viewModel.reloadArticles() }
         })
-    }
-
-    override fun onStop() {
-        dismissSnackbar()
-        super.onStop()
     }
 }

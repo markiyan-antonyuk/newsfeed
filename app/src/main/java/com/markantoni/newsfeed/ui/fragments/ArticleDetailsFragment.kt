@@ -41,11 +41,6 @@ class ArticleDetailsFragment : BaseFragment() {
         viewModel.loadArticle(article.id)
     }
 
-    override fun onStop() {
-        dismissSnackbar()
-        super.onStop()
-    }
-
     private fun bindArticle(article: Article, firstBind: Boolean = false) {
         this.article = article
 

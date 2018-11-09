@@ -1,5 +1,6 @@
 package com.markantoni.newsfeed.datasource
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.markantoni.newsfeed.SingleLiveData
 import com.markantoni.newsfeed.repository.Repository
@@ -18,7 +19,7 @@ class ArticlesDataSource : PageKeyedDataSource<Int, Article>(), KoinComponent, C
     private val repository by inject<Repository>()
     val error = SingleLiveData<Throwable>()
     val loading = SingleLiveData<Boolean>()
-    val initialArticle = SingleLiveData<Article>()
+    val initialArticle = MutableLiveData<Article>()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Article>) {
         launch {

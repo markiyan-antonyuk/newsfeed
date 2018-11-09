@@ -3,8 +3,14 @@
     <string name="base_url" translatable="false">http://content.guardianapis.com</string>
     <string name="api_key" translatable="false">test</string>
 
+    <string name="message_articles_available">New articles are available, click to load them.</string>
+
     <string name="error_general">Something went wrong, please try again.</string>
+
     <string name="label_retry">Retry</string>
     <string name="label_load">Load</string>
-    <string name="message_articles_available">New articles are available, click to load them.</string>
+
+    <string name="notification_channel_name">Feed</string>
+    <string name="notification_articles_available">New articles are available.</string>
+    <string name="notification_click_to_read">Click to read them</string>
 </resources>
