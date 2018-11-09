@@ -1,4 +1,4 @@
-package com.markantoni.newsfeed.repository.datasource
+package com.markantoni.newsfeed.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource

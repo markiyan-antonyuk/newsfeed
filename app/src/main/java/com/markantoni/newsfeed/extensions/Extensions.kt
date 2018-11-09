@@ -26,11 +26,12 @@ fun View.showErrorSnackbar(retryAction: () -> Unit) {
         .show()
 }
 
-fun ImageView.loadImage(url: String?) {
+fun ImageView.loadImage(url: String?, crossFade: Boolean = true) {
     Glide
         .with(context)
         .load(url)
-        .apply(RequestOptions().centerCrop())
-        .transition(DrawableTransitionOptions.withCrossFade())
+        .apply(RequestOptions().centerCrop()).apply {
+            if (crossFade) transition(DrawableTransitionOptions.withCrossFade())
+        }
         .into(this)
 }

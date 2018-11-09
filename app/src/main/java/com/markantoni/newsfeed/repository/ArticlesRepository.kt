@@ -15,4 +15,7 @@ class ArticlesRepository : Repository, KoinComponent {
 //        } catch (e: UnknownHostException, HttpException) { //no network
 //            listOf() //offline repo load
 //        }
+
+    override suspend fun loadArticle(id: String): Article =
+            networkRepository.loadArticle(id)
 }

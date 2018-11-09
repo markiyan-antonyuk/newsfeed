@@ -5,13 +5,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.markantoni.newsfeed.repository.datasource.ArticlesDataSourceFactory
+import com.markantoni.newsfeed.datasource.ArticlesDataSourceFactory
 import com.markantoni.newsfeed.repository.model.Article
 import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
-class ArticlesViewModel : ViewModel(), CoroutineScope, KoinComponent {
+class NewsFeedViewModel : ViewModel(), CoroutineScope, KoinComponent {
     private val job = Job()
     override val coroutineContext = Dispatchers.Main + job
 

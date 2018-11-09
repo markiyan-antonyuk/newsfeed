@@ -10,13 +10,18 @@ import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.extensions.inflate
 import com.markantoni.newsfeed.extensions.showErrorSnackbar
 import com.markantoni.newsfeed.ui.adapters.ArticlesAdapter
-import com.markantoni.newsfeed.viewmodel.ArticlesViewModel
+import com.markantoni.newsfeed.viewmodel.NavigationViewModel
+import com.markantoni.newsfeed.viewmodel.NewsFeedViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
-    private val viewModel by viewModel<ArticlesViewModel>()
-    private val articlesAdapter = ArticlesAdapter()
+    private val viewModel by viewModel<NewsFeedViewModel>()
+    private val navigationViewModel by sharedViewModel<NavigationViewModel>()
+    private val articlesAdapter = ArticlesAdapter { article, imageView ->
+        navigationViewModel.requestShowArticleDetails(article, imageView)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         container?.inflate(R.layout.fragment_home)
