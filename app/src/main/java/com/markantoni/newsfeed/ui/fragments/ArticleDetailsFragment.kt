@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.extensions.inflate
 import com.markantoni.newsfeed.extensions.loadImage
@@ -34,7 +35,7 @@ class ArticleDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bindArticle(arguments?.getParcelable(KEY_ARTICLE) ?: error("Must pass an article"), true)
-        articleSaveBtn.setOnClickListener { viewModel.saveArticle(article) }
+        articleSaveBtn.setOnClickListener { saveArticle() }
         articleImage.transitionName = article.title
 
         viewModel.article.observe(this, Observer { bindArticle(it) })
@@ -53,5 +54,14 @@ class ArticleDetailsFragment : Fragment() {
         } ?: false
         articleImage.loadImage(article.image, false)
         if (!firstBind) articleSaveBtn.isVisible = !article.isSaved
+    }
+
+    private fun saveArticle() {
+        Glide
+            .with(requireContext())
+            .downloadOnly()
+            .load(article.image)
+            .submit()
+        viewModel.saveArticle(article)
     }
 }
