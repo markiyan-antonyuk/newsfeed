@@ -2,19 +2,14 @@ package com.markantoni.newsfeed.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.markantoni.newsfeed.datasource.ArticlesDataSourceFactory
 import com.markantoni.newsfeed.repository.model.Article
-import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
-class NewsFeedViewModel : ViewModel(), CoroutineScope, KoinComponent {
-    private val job = Job()
-    override val coroutineContext = Dispatchers.Main + job
-
+class NewsFeedViewModel : CoroutineViewModel(), KoinComponent {
     private val dataSourceFactory by inject<ArticlesDataSourceFactory>()
     val articles: LiveData<PagedList<Article>>
     val articlesError = Transformations.switchMap(dataSourceFactory.dataSource) { it.error }
@@ -31,6 +26,4 @@ class NewsFeedViewModel : ViewModel(), CoroutineScope, KoinComponent {
     }
 
     fun reloadArticles() = articles.value?.dataSource?.invalidate()
-
-    override fun onCleared() = job.cancel()
 }

@@ -5,7 +5,7 @@ import com.markantoni.newsfeed.repository.network.NetworkRepository
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
-class ArticlesRepository : Repository, KoinComponent {
+class NewsFeedRepository : Repository, KoinComponent {
     private val networkRepository by inject<NetworkRepository>()
     //offline repo
 
