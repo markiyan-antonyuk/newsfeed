@@ -5,4 +5,6 @@
 
     <string name="error_general">Something went wrong, please try again.</string>
     <string name="label_retry">Retry</string>
+    <string name="label_load">Load</string>
+    <string name="message_articles_available">New articles are available, click to load them.</string>
 </resources>

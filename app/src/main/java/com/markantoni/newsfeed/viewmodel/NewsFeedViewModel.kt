@@ -1,19 +1,30 @@
 package com.markantoni.newsfeed.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.markantoni.newsfeed.datasource.ArticlesDataSourceFactory
 import com.markantoni.newsfeed.repository.model.Article
+import com.markantoni.newsfeed.repository.network.NetworkRepository
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import java.util.concurrent.TimeUnit
 
 class NewsFeedViewModel : CoroutineViewModel(), KoinComponent {
     private val dataSourceFactory by inject<ArticlesDataSourceFactory>()
+    private val networkRepository by inject<NetworkRepository>()
+    private var scheduledJob: Job? = null
+
     val articles: LiveData<PagedList<Article>>
     val articlesError = Transformations.switchMap(dataSourceFactory.dataSource) { it.error }
     val articlesLoading = Transformations.switchMap(dataSourceFactory.dataSource) { it.loading }
+    val initialArticle = Transformations.switchMap(dataSourceFactory.dataSource) { it.initialArticle }
+    val articlesAvailable = MutableLiveData<Unit>()
 
     init {
         val config = PagedList.Config.Builder()
@@ -26,4 +37,22 @@ class NewsFeedViewModel : CoroutineViewModel(), KoinComponent {
     }
 
     fun reloadArticles() = articles.value?.dataSource?.invalidate()
+
+    fun scheduleCheckNewArticles(after: Long) {
+        cancelScheduledCheckNewArticles()
+        scheduledJob = async {
+            delay(TimeUnit.SECONDS.toMillis(30))
+            val newestTimeStamp = networkRepository.loadArticles(1, 1).first().timestamp
+            if (newestTimeStamp > after) {
+                cancelScheduledCheckNewArticles()
+                articlesAvailable.value = Unit
+            } else {
+                scheduleCheckNewArticles(after)
+            }
+        }
+    }
+
+    fun cancelScheduledCheckNewArticles() {
+        scheduledJob?.cancel()
+    }
 }

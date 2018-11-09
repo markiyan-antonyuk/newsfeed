@@ -18,11 +18,14 @@ class ArticlesDataSource : PageKeyedDataSource<Int, Article>(), KoinComponent, C
     private val repository by inject<Repository>()
     val error = SingleLiveData<Throwable>()
     val loading = SingleLiveData<Boolean>()
+    val initialArticle = SingleLiveData<Article>()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Article>) {
         launch {
             loading.value = true
-            callback.onResult(repository.loadArticles(params.requestedLoadSize, 1), null, 2)
+            val articles = repository.loadArticles(params.requestedLoadSize, 1)
+            articles.firstOrNull()?.let { initialArticle.value = it }
+            callback.onResult(articles, null, 2)
             loading.value = false
         }
     }

@@ -6,19 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.extensions.inflate
 import com.markantoni.newsfeed.extensions.loadImage
-import com.markantoni.newsfeed.extensions.showErrorSnackbar
 import com.markantoni.newsfeed.repository.model.Article
 import com.markantoni.newsfeed.viewmodel.ArticleViewModel
 import kotlinx.android.synthetic.main.fragment_article_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ArticleDetailsFragment : Fragment() {
+class ArticleDetailsFragment : BaseFragment() {
     companion object {
         private const val KEY_ARTICLE = "key.article"
         fun newInstance(article: Article) = ArticleDetailsFragment().apply {
@@ -39,8 +37,13 @@ class ArticleDetailsFragment : Fragment() {
         articleImage.transitionName = article.title
 
         viewModel.article.observe(this, Observer { bindArticle(it) })
-        viewModel.error.observe(this, Observer { view?.showErrorSnackbar { viewModel.loadArticle(article.id) } })
+        viewModel.error.observe(this, Observer { showErrorSnackbar { viewModel.loadArticle(article.id) } })
         viewModel.loadArticle(article.id)
+    }
+
+    override fun onStop() {
+        dismissSnackbar()
+        super.onStop()
     }
 
     private fun bindArticle(article: Article, firstBind: Boolean = false) {

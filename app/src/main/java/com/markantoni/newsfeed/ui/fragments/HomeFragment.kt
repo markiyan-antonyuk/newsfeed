@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.extensions.inflate
-import com.markantoni.newsfeed.extensions.showErrorSnackbar
 import com.markantoni.newsfeed.ui.adapters.ArticlesAdapter
 import com.markantoni.newsfeed.viewmodel.NavigationViewModel
 import com.markantoni.newsfeed.viewmodel.NewsFeedViewModel
@@ -16,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
     private val viewModel by viewModel<NewsFeedViewModel>()
     private val navigationViewModel by sharedViewModel<NavigationViewModel>()
     private val articlesAdapter = ArticlesAdapter { article, imageView ->
@@ -33,9 +31,19 @@ class HomeFragment : Fragment() {
 
         viewModel.articles.observe(this, Observer { articlesAdapter.submitList(it) })
         viewModel.articlesLoading.observe(this, Observer { homeSwipeToRefresh.isRefreshing = it })
+        viewModel.initialArticle.observe(this, Observer { viewModel.scheduleCheckNewArticles(it.timestamp) })
         viewModel.articlesError.observe(this, Observer {
             homeSwipeToRefresh.isRefreshing = false
-            view?.showErrorSnackbar { viewModel.reloadArticles() }
+            showErrorSnackbar { viewModel.reloadArticles() }
         })
+        viewModel.articlesAvailable.observe(this, Observer {
+            viewModel.cancelScheduledCheckNewArticles()
+            showSnackbar(R.string.message_articles_available, R.string.label_load) { viewModel.reloadArticles() }
+        })
+    }
+
+    override fun onStop() {
+        dismissSnackbar()
+        super.onStop()
     }
 }
