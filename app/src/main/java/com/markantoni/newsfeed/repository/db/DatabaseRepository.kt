@@ -15,7 +15,7 @@ class DatabaseRepository : Repository, KoinComponent, CoroutineScope {
 
     override suspend fun loadArticles(pageSize: Int, page: Int): List<Article> = async {
         if (page == 1) {
-            db.articlesDao().selectAllArticles().sortedBy { it.timestamp }.map { it.toArticle() }
+            db.articlesDao().selectAllArticles().sortedByDescending { it.timestamp }.map { it.toArticle() }
         } else {
             listOf()
         }

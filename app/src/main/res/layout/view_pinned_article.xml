@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="@dimen/pinned_article_width"
+        android:layout_height="@dimen/pinned_article_height"
+        android:layout_marginStart="@dimen/margin_tiny"
+        android:layout_marginEnd="@dimen/margin_tiny"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        app:cardCornerRadius="@dimen/margin_tiny">
+
+    <ImageView
+            android:id="@+id/articleImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+</com.google.android.material.card.MaterialCardView>

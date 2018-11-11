@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToArticleDetails(transition: NavigationViewModel.ArticleTransition) {
         supportFragmentManager.transaction {
-            val fragment = ArticleDetailsFragment.newInstance(transition.article).apply {
-                val sharedTransition = TransitionInflater.from(this@MainActivity).inflateTransition(R.transition.image)
-                sharedElementEnterTransition = sharedTransition
-                sharedElementReturnTransition = sharedTransition
-            }
+            val fragment = ArticleDetailsFragment.newInstance(transition.article, transition.image.transitionName).apply {
+                    val sharedTransition = TransitionInflater.from(this@MainActivity).inflateTransition(R.transition.image)
+                    sharedElementEnterTransition = sharedTransition
+                    sharedElementReturnTransition = sharedTransition
+                }
 
             transition.image.let { addSharedElement(it, it.transitionName) }
             setCustomAnimations(android.R.anim.fade_in, 0, 0, android.R.anim.fade_out)

@@ -9,8 +9,7 @@ data class Article(
     val category: String, val image: String,
     val description: String?,
     val timestamp: Long,
-    var isSaved: Boolean = false,
-    var isPinned: Boolean = false
+    var isSaved: Boolean = false
 ) : Parcelable
 
 fun Article.isEmpty() = id.isEmpty() && title.isEmpty()

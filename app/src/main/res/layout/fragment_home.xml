@@ -5,15 +5,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/homeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/Base.Theme.MaterialComponents.Light.DarkActionBar"
+            android:background="@color/primary"
+            app:titleTextColor="@color/light_grey"
+            app:title="@string/app_name"
+            app:layout_constraintTop_toTopOf="parent">
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homePinnedRv"
+            app:layout_constraintTop_toBottomOf="@id/homeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <com.markantoni.newsfeed.ui.views.PrimarySwipeRefreshLayout
             android:id="@+id/homeSwipeToRefresh"
+            app:layout_constraintTop_toBottomOf="@id/homePinnedRv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homeRecyclerView"
+                android:id="@+id/homeArticlesRv"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_height="match_parent"/>
 
     </com.markantoni.newsfeed.ui.views.PrimarySwipeRefreshLayout>
