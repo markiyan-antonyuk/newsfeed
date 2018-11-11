@@ -18,4 +18,10 @@ class ArticleViewModel : CoroutineViewModel(), KoinComponent {
         repository.saveArticle(article)
         this@ArticleViewModel.article.value = article
     }
+
+    fun deleteArticle(article: Article) = launch {
+        article.isSaved = false
+        repository.deleteArticle(article)
+        this@ArticleViewModel.article.value = article
+    }
 }

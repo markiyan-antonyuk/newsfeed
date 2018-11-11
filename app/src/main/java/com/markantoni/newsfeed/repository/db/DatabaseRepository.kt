@@ -29,6 +29,10 @@ class DatabaseRepository : Repository, KoinComponent, CoroutineScope {
         launch { db.articlesDao().saveArticle(article.toArticleModel()) }
     }
 
+    override suspend fun deleteArticle(article: Article) {
+        launch { db.articlesDao().deleteArticle(article.toArticleModel()) }
+    }
+
     fun updateArticle(article: Article) {
         launch { db.articlesDao().updateArticle(article.toArticleModel()) }
     }

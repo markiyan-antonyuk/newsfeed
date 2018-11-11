@@ -21,11 +21,14 @@ interface ArticlesDao {
     @Query("SELECT * FROM article WHERE id = (:id) ")
     fun findArticle(id: String): ArticleModel?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveArticle(article: ArticleModel)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateArticle(article: ArticleModel)
+
+    @Delete
+    fun deleteArticle(article: ArticleModel)
 }
 
 fun ArticleModel.toArticle() = Article(id, title, category, image, description, timestamp, isSaved = true)

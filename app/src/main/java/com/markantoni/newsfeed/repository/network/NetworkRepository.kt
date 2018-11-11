@@ -20,4 +20,5 @@ class NetworkRepository : Repository, KoinComponent {
     }
 
     override suspend fun saveArticle(article: Article) = error("Can't save to network")
+    override suspend fun deleteArticle(article: Article) = error("Can't delete from network")
 }

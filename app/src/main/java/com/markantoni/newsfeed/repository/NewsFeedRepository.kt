@@ -45,5 +45,7 @@ class NewsFeedRepository : Repository, KoinComponent {
 
     override suspend fun saveArticle(article: Article) = dbRepository.saveArticle(article)
 
+    override suspend fun deleteArticle(article: Article) = dbRepository.deleteArticle(article)
+
     private fun Exception.isNetworkRelated() = this is UnknownHostException || this is HttpException
 }

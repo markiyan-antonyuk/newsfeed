@@ -8,10 +8,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.markantoni.newsfeed.R
+import com.markantoni.newsfeed.repository.model.Article
 import com.markantoni.newsfeed.util.downloadImage
 import com.markantoni.newsfeed.util.inflate
 import com.markantoni.newsfeed.util.loadImage
-import com.markantoni.newsfeed.repository.model.Article
 import com.markantoni.newsfeed.viewmodel.ArticleViewModel
 import kotlinx.android.synthetic.main.fragment_article_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +33,7 @@ class ArticleDetailsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         bindArticle(arguments?.getParcelable(KEY_ARTICLE) ?: error("Must pass an article"), true)
-        articleSaveBtn.setOnClickListener { saveArticle() }
+        articleSaveCb.setOnCheckedChangeListener { _, isChecked -> if (isChecked) saveArticle() else deleteArticle() }
         articleImage.transitionName = article.title
 
         viewModel.article.observe(this, Observer { bindArticle(it) })
@@ -46,20 +46,22 @@ class ArticleDetailsFragment : BaseFragment() {
 
         articleTitle.text = article.title
         articleCategory.text = article.category
+        articleSaveCb.isChecked = article.isSaved
         articleDescription.isVisible = article.description?.let {
             articleDescription.text = it
             true
         } ?: false
+
         articleImage.loadImage(article.image, false)
-        if (!firstBind) {
-            articleSaveBtn.isVisible = !article.isSaved
-        } else {
-            if (article.isSaved) requireContext().downloadImage(article.image)
-        }
+        if (firstBind && article.isSaved) requireContext().downloadImage(article.image)
     }
 
     private fun saveArticle() {
         requireContext().downloadImage(article.image)
         viewModel.saveArticle(article)
+    }
+
+    private fun deleteArticle() {
+        viewModel.deleteArticle(article)
     }
 }

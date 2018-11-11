@@ -28,18 +28,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/articleImage"/>
 
-        <ImageView
-                android:id="@+id/articleSaveBtn"
-                android:layout_width="@dimen/icons_size_default"
-                android:layout_height="@dimen/icons_size_default"
-                android:src="@drawable/ic_save"
-                android:visibility="gone"
+        <CheckBox
+                android:id="@+id/articleSaveCb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/articleCategory"
                 app:layout_constraintBottom_toBottomOf="@id/articleCategory"
                 android:padding="@dimen/margin_default"
                 app:layout_constraintTop_toBottomOf="@id/articleImage"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+                android:button="@drawable/selector_save_button"/>
 
         <TextView
                 android:id="@+id/articleTitle"
