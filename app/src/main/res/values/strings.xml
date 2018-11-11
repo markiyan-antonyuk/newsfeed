@@ -13,4 +13,6 @@
     <string name="notification_channel_name">Feed</string>
     <string name="notification_articles_available">New articles are available.</string>
     <string name="notification_click_to_read">Click to read them</string>
+
+    <string name="home_flattened">Flattened</string>
 </resources>

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionManager
 import com.markantoni.newsfeed.R
 import com.markantoni.newsfeed.repository.model.Article
 import com.markantoni.newsfeed.ui.adapters.ArticlesAdapter
@@ -40,6 +41,7 @@ class HomeFragment : BaseFragment() {
         articlesAdapter = ArticlesAdapter(articleClicked)
         pinnedAdapter = PinnedArticlesAdapter(articleClicked)
 
+        flattenCb.setOnCheckedChangeListener { _, isChecked -> flattenArticles(isChecked) }
         homeSwipeToRefresh.setOnRefreshListener { viewModel.reloadArticles() }
         homeArticlesRv.adapter = articlesAdapter
         homeArticlesRv.layoutManager = GridLayoutManager(requireContext(), 1)
@@ -60,5 +62,12 @@ class HomeFragment : BaseFragment() {
         articleViewModel.pinnedArticles.observe(this, Observer {
             pinnedAdapter.submitList(it)
         })
+    }
+
+    private fun flattenArticles(flatten: Boolean) {
+        articlesAdapter.isFlattened = flatten
+        TransitionManager.beginDelayedTransition(homeArticlesRv)
+        articlesAdapter.notifyItemRangeChanged(0, articlesAdapter.itemCount - 1)
+        (homeArticlesRv.layoutManager as GridLayoutManager).spanCount = if (flatten) 3 else 1
     }
 }
