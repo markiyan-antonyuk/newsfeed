@@ -1,4 +1,4 @@
-package com.markantoni.newsfeed.extensions
+package com.markantoni.newsfeed.util
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -26,6 +26,14 @@ fun ImageView.loadImage(url: String?, crossFade: Boolean = true) {
             if (crossFade) transition(DrawableTransitionOptions.withCrossFade())
         }
         .into(this)
+}
+
+fun Context.downloadImage(url: String) {
+    Glide
+        .with(this)
+        .downloadOnly()
+        .load(url)
+        .submit()
 }
 
 fun String.toTimestamp(): Long {

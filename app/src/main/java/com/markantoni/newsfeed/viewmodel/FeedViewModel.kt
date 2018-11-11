@@ -38,12 +38,12 @@ class FeedViewModel : CoroutineViewModel(), KoinComponent {
 
     fun reloadArticles() = articles.value?.dataSource?.invalidate()
 
-    fun scheduleCheckNewArticles(after: Long) {
+    fun scheduleCheckNewArticles(after: Article) {
         cancelScheduledCheckNewArticles()
         scheduledJob = async {
             delay(TimeUnit.SECONDS.toMillis(30))
-            val newestTimeStamp = networkRepository.loadArticles(1, 1).first().timestamp
-            if (newestTimeStamp > after) {
+            val article = networkRepository.loadArticles(1, 1).first()
+            if (article.id != after.id && article.timestamp > after.timestamp) {
                 cancelScheduledCheckNewArticles()
                 articlesAvailable.value = Unit
             } else {

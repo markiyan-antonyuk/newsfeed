@@ -23,6 +23,9 @@ interface ArticlesDao {
 
     @Insert
     fun saveArticle(article: ArticleModel)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateArticle(article: ArticleModel)
 }
 
 fun ArticleModel.toArticle() = Article(id, title, category, image, description, timestamp, isSaved = true)

@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.markantoni.newsfeed.R
-import com.markantoni.newsfeed.extensions.inflate
 import com.markantoni.newsfeed.ui.adapters.ArticlesAdapter
-import com.markantoni.newsfeed.viewmodel.NavigationViewModel
+import com.markantoni.newsfeed.util.inflate
 import com.markantoni.newsfeed.viewmodel.FeedViewModel
+import com.markantoni.newsfeed.viewmodel.NavigationViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment() {
-    private val viewModel by sharedViewModel<FeedViewModel>()
+    private val viewModel by viewModel<FeedViewModel>()
     private val navigationViewModel by sharedViewModel<NavigationViewModel>()
     private val articlesAdapter = ArticlesAdapter { article, imageView ->
         navigationViewModel.requestShowArticleDetails(article, imageView)
@@ -30,7 +31,7 @@ class HomeFragment : BaseFragment() {
 
         viewModel.articles.observe(this, Observer { articlesAdapter.submitList(it) })
         viewModel.articlesLoading.observe(this, Observer { homeSwipeToRefresh.isRefreshing = it })
-        viewModel.initialArticle.observe(this, Observer { viewModel.scheduleCheckNewArticles(it.timestamp) })
+        viewModel.initialArticle.observe(this, Observer(viewModel::scheduleCheckNewArticles))
         viewModel.articlesError.observe(this, Observer {
             homeSwipeToRefresh.isRefreshing = false
             showErrorSnackbar { viewModel.reloadArticles() }

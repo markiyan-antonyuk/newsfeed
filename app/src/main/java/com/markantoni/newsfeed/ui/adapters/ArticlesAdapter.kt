@@ -7,8 +7,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.markantoni.newsfeed.R
-import com.markantoni.newsfeed.extensions.inflate
-import com.markantoni.newsfeed.extensions.loadImage
+import com.markantoni.newsfeed.util.inflate
+import com.markantoni.newsfeed.util.loadImage
 import com.markantoni.newsfeed.repository.model.Article
 import com.markantoni.newsfeed.repository.model.isEmpty
 import kotlinx.android.synthetic.main.row_home_article.view.*

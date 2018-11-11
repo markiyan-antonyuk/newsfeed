@@ -29,7 +29,9 @@ class NewsFeedRepository : Repository, KoinComponent {
             try {
                 //check if it's saved too
                 val dbArticle = dbRepository.loadArticle(id)
-                article.isSaved = article.id == dbArticle.id
+                val saved = article.id == dbArticle.id
+                if (saved) dbRepository.updateArticle(article)
+                article.isSaved = saved
             } catch (e: Exception) {
             }
             article

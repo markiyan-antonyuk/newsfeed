@@ -1,7 +1,7 @@
 package com.markantoni.newsfeed.repository.network
 
 import com.google.gson.annotations.SerializedName
-import com.markantoni.newsfeed.extensions.toTimestamp
+import com.markantoni.newsfeed.util.toTimestamp
 import com.markantoni.newsfeed.repository.model.Article
 
 data class ArticlesResponse(val response: Response)

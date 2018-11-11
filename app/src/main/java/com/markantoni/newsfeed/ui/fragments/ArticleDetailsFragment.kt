@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
 import com.markantoni.newsfeed.R
-import com.markantoni.newsfeed.extensions.inflate
-import com.markantoni.newsfeed.extensions.loadImage
+import com.markantoni.newsfeed.util.downloadImage
+import com.markantoni.newsfeed.util.inflate
+import com.markantoni.newsfeed.util.loadImage
 import com.markantoni.newsfeed.repository.model.Article
 import com.markantoni.newsfeed.viewmodel.ArticleViewModel
 import kotlinx.android.synthetic.main.fragment_article_details.*
@@ -51,15 +51,15 @@ class ArticleDetailsFragment : BaseFragment() {
             true
         } ?: false
         articleImage.loadImage(article.image, false)
-        if (!firstBind) articleSaveBtn.isVisible = !article.isSaved
+        if (!firstBind) {
+            articleSaveBtn.isVisible = !article.isSaved
+        } else {
+            if (article.isSaved) requireContext().downloadImage(article.image)
+        }
     }
 
     private fun saveArticle() {
-        Glide
-            .with(requireContext())
-            .downloadOnly()
-            .load(article.image)
-            .submit()
+        requireContext().downloadImage(article.image)
         viewModel.saveArticle(article)
     }
 }
